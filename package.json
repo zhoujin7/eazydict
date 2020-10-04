@@ -36,7 +36,8 @@
   "files": [
     "bin",
     "src",
-    "index.js"
+    "index.js",
+    "eazydict.yml"
   ],
   "bugs": {
     "url": "https://github.com/keenwon/eazydict/issues"
@@ -46,35 +47,20 @@
     "node": ">=8"
   },
   "dependencies": {
-    "blessed": "^0.1.81",
     "chalk": "^4.1.0",
-    "chalk-animation": "^1.6.0",
-    "cli-table3": "^0.6.0",
-    "cli-width": "^3.0.0",
-    "commander": "^6.1.0",
     "debug": "^4.2.0",
     "eazydict-bing": "^2.1.0",
     "eazydict-google": "^2.1.0",
     "eazydict-youdao": "^2.1.0",
-    "filesize": "^6.1.0",
     "fs-extra": "^9.0.1",
-    "inquirer": "^7.3.3",
     "js-yaml": "^3.14.0",
-    "moment": "^2.29.0",
-    "npmi": "^4.0.0",
-    "ora": "^5.1.0",
-    "sequelize": "^6.3.5",
-    "sqlite3": "^5.0.0",
     "string-break": "^1.2.0",
     "string-width": "^4.2.0",
-    "unicons": "^0.0.3",
-    "update-notifier": "^5.0.0"
+    "unicons": "^0.0.3"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
     "elint": "^2.0.0-alpha.3",
     "elint-preset-kw": "^1.9.0",
-    "mocha": "^7.2.0",
     "nyc": "^15.1.0"
   }
 }

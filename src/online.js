@@ -2,15 +2,15 @@
 
 const debug = require('debug')('eazydict:core:service:lookup')
 const chalk = require('chalk')
-const plugins = require('../../lib/plugins')
-const config = require('../../lib/config')
-const { icon } = require('../../utils')
+const plugins = require('./lib/plugins')
+const config = require('./lib/config')
+const {icon} = require('./utils')
 
 /**
  * 在线查询
  */
 
-function online (words) {
+function online(words) {
   if (plugins && !plugins.length) {
     console.log()
     console.log()

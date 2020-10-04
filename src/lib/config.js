@@ -1,19 +1,11 @@
 'use strict'
 
 const debug = require('debug')('eazydict:core:lib:config')
-const os = require('os')
 const path = require('path')
 const fs = require('fs-extra')
 const yaml = require('js-yaml')
 
-const home = os.homedir()
-const defaultConfigFile = path.join(__dirname, '../..', '.eazydict.yml')
-const userConfigFile = path.join(home, '.eazydict.yml')
-
-// 创建用户配置
-if (!fs.pathExistsSync(userConfigFile)) {
-  fs.copySync(defaultConfigFile, userConfigFile)
-}
+const userConfigFile = path.join(__dirname, '../..', 'eazydict.yml')
 
 const content = fs.readFileSync(userConfigFile, 'utf-8')
 const config = {}

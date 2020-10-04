@@ -4,7 +4,7 @@ const config = require('./config')
 
 const pluginsConfig = config.output
 
-function getCount (value) {
+function getCount(value) {
   const number = Number(value)
 
   if (typeof number !== 'number' || number < 0) {
@@ -18,7 +18,7 @@ function getCount (value) {
  * 根据配置文件过滤 plugin 输出的原始数据
  */
 
-function filter (outputArray) {
+function filter(outputArray) {
   if (!pluginsConfig) {
     return outputArray
   }

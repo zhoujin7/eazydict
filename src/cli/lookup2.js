@@ -2,14 +2,11 @@
 
 /* eslint-disable max-params */
 
-const chalk = require('chalk')
 const stringBreak = require('string-break')
-const config = require('../lib/config')
 const {pad, icon} = require('../utils')
 
 let windowWidth
 
-chalk.enabled = typeof config.colorful === 'boolean' ? config.colorful : true
 
 /**
  * 高亮关键字
@@ -19,7 +16,7 @@ function highlight(str, words) {
   const regexp = new RegExp(words, 'ig')
 
   return str.replace(regexp, substr => {
-    return chalk.red(substr)
+    return `<span class="red">${substr}</span>`
   })
 }
 
@@ -41,7 +38,7 @@ function formatExample(str, words, firstLineIndent, indent) {
 
       return index === 0 ? firstLineIndent + highlightLine : indent + highlightLine
     })
-    .join('\n')
+    .join('<br>\n')
 }
 
 function main(data, width) {
@@ -52,8 +49,8 @@ function main(data, width) {
 
   // 输出翻译信息
   data.forEach(item => {
-    const pluginName = chalk.blue.bold(item.pluginName)
-    const url = chalk.black.underline(item.url)
+    const pluginName = item.pluginName
+    const url = item.url
 
     const hasPhonetics = item.phonetics && item.phonetics.length
     const hasTranslates = item.translates && item.translates.length
@@ -63,8 +60,7 @@ function main(data, width) {
      * 标题
      */
     if (hasPhonetics || hasTranslates || hasExamples) {
-      result.push(`  ${icon.circle} ${pluginName}   ${url}`)
-      result.push('')
+      result.push(`<p class="plugin-name"><span class="bold">${icon.circle}</span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="blue bold" href="${url}"><span>${pluginName}</span></a></p>`)
       count++
     }
 
@@ -72,21 +68,20 @@ function main(data, width) {
      * 音标
      */
     if (hasPhonetics) {
-      let phoneticLine = '    '
+      let phoneticLine = ''
 
       item.phonetics.forEach(phonetic => {
-        const value = chalk.gray.bold(phonetic.value)
+        const value = phonetic.value
 
         if (phonetic.type) {
-          const type = chalk.red(phonetic.type)
-          phoneticLine += `${type} ${value}  `
+          const type = phonetic.type
+          phoneticLine += `<span class="red">${type}</span> <span class="gray bold">${value}</span>&nbsp;&nbsp;`
         } else {
-          phoneticLine += `${value}  `
+          phoneticLine += `<span class="bold">${value}</span>&nbsp;&nbsp;`
         }
       })
 
-      result.push(phoneticLine + '')
-      result.push('')
+      result.push(`<p>${phoneticLine}</p>`)
     }
 
     /**
@@ -97,43 +92,50 @@ function main(data, width) {
         const trans = translate.trans
 
         if (translate.type) {
-          const type = chalk.yellow(pad(translate.type, 8, ' '))
-          result.push(`    ${type} ${trans}`)
+          const type = pad(translate.type,  8,'&nbsp;')
+          result.push(`<p><span class="yellow">${type}</span> ${trans}</p>`)
         } else {
-          result.push(`    ${trans}`)
+          result.push(`<p>${trans}</p>`)
         }
       })
-      result.push('')
     }
 
     /**
      * 例句
      */
     if (hasExamples) {
-      result.push(`    ${chalk.green('例句:')}`)
+      result.push(`<p><span class="green">例句:</span></p>`)
 
       item.examples.forEach(example => {
-        const fromFirstLineIndent = `    ${chalk.yellow.bold('+')} `
-        const toFirstLineIndent = `    ${chalk.green.bold('-')} `
-        const indent = '      '
+        const fromFirstLineIndent = `<span class="yellow bold">+</span> `
+        const toFirstLineIndent = `<span class="green bold">-</span> `
+        const indent = '&nbsp;&nbsp;'
 
         const fromStr = formatExample(example.from, item.words, fromFirstLineIndent, indent)
         const toStr = formatExample(example.to, item.words, toFirstLineIndent, indent)
 
-        result.push('')
-        result.push(fromStr)
-        result.push(toStr)
+        result.push(`<p>${fromStr}</p>`)
+        result.push(`<p>${toStr}</p>`)
       })
-
-      result.push('')
     }
   })
 
   if (!count) {
-    result = ['', chalk.red(`  ${icon.cross} 没有查询到任何结果!`), '']
+    result = 'Not Found'
+    return result
   }
 
-  return result.join('\n')
+  const style = `<style type="text/css">
+  p {margin-left: 20px;}
+  .plugin-name {margin-left: 0;}
+  .blue {color:#4472C4;}
+  .red {color:#CD0000;}
+  .gray {color:#808080;}
+  .bold {font-weight:600;}
+  .green {color:#00CD00;}
+  .yellow {color:#BF8F00;}
+</style>`
+  return style + result.join('\n')
 }
 
 module.exports = main
