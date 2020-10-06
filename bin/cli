@@ -12,7 +12,7 @@ program
   .usage('<words...>')
   .description('简单易用的命令行词典 https://github.com/keenwon/eazydict')
   .action(function (...argus) {
-    const words = argus.slice(0, -1);
+    const words = argus[1];
     lookup(words);
   });
 
