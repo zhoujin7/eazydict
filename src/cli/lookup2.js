@@ -92,7 +92,7 @@ function main(data, width) {
         const trans = translate.trans
 
         if (translate.type) {
-          const type = pad(translate.type,  8,'&nbsp;')
+          const type = pad(translate.type, 8, '&nbsp;')
           result.push(`<p><span class="yellow">${type}</span> ${trans}</p>`)
         } else {
           result.push(`<p>${trans}</p>`)
