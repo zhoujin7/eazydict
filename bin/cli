@@ -1,4 +1,59 @@
+#!/usr/bin/env node
+
 'use strict';
 
+const program = require('commander');
 const {lookup} = require('../index');
-lookup('word');
+
+/**
+ * 主程序
+ */
+program
+  .usage('<words...>')
+  .description('简单易用的命令行词典 https://github.com/keenwon/eazydict')
+  .action(function (...argus) {
+    const words = argus.slice(0, -1);
+    lookup(words);
+  });
+
+/**
+ * 查询
+ */
+program
+  .command('lookup <words...>')
+  .alias('l')
+  .description('查询 words 的翻译')
+  .action(function (words) {
+    lookup(...words);
+  });
+
+/**
+ * 自定义 help
+ */
+program.on('--help', function () {
+  console.log('');
+  console.log('  Examples:');
+  console.log('');
+  console.log('    查询短语 "fly in sky"：');
+  console.log('    $ eazydict fly in sky');
+  console.log('    $ eazydict lookup fly in sky');
+  console.log('    $ eazydict l fly in sky');
+  console.log('');
+});
+
+program.parse(process.argv);
+
+function showHelp() {
+  // 没有输入任何参数
+  if (process.argv.length === 2) {
+    return true;
+  }
+
+  const argus = process.argv.slice(2);
+
+  return argus.every(item => item.startsWith('-'));
+}
+
+if (showHelp()) {
+  program.help();
+}
